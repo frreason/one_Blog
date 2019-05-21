@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"one_Blog/models"
+
 	"github.com/astaxie/beego"
 )
 
@@ -18,5 +20,10 @@ func (this *HomeController) Get() {
 	if isLogin {
 		this.Data["IsLogin"] = true
 	}
+	topics, err := models.GetAllTopic()
+	if err != nil {
+		beego.Error(err)
+	}
+	this.Data["Topics"] = topics
 
 }

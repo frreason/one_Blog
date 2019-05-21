@@ -6,6 +6,8 @@ import (
 	"path"
 	"time"
 
+	"github.com/astaxie/beego"
+
 	"github.com/Unknwon/com"
 
 	"github.com/astaxie/beego/orm"
@@ -137,6 +139,7 @@ func AddTopic(title, content, category string) error {
 		Updated:    realNow,
 		Category:   category,
 		ReplayTime: realNow,
+		Author:     beego.AppConfig.String("userName"),
 	}
 	_, err = o.Insert(oneTopic)
 	if err != nil {
