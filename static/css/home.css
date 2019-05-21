@@ -1,0 +1,14 @@
+
+
+.list-right {
+    position: absolute;
+    right: 40px;
+    top: 100px;
+    width: 250px;
+
+}
+
+.aColor {
+    color: black;
+    text-decoration: none;
+}

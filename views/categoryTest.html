@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../static/css/particles.css">
+
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+        <script src="../static/js/bootstrap.min.js"></script>
+        <script src="../static/js/particles.min.js"></script>
+        <script src="../static/js/mouse.js"></script>
+        <link rel="stylesheet" type="text/css" href="../static/css/home.css">
+        <title>One Blog</title>
+    </head>
+    <body>
+        <div id="particles-js"></div>
+
+        <div class="navbar navbar-default" style="margin-bottom :10px;">
+            <div class="container">
+                <div>
+                    <a class="navbar-brand" href="#">One Blog</a>
+                    <ul class="nav navbar-nav">
+                        <li {{if .IsHome}}class="active" {{end}}><a href="/">首页</a></li>
+                        <li {{if .IsAll}}class="active" {{end}}><a href="/all">文章</a></li>
+                        <li class="dropdown" {{if .IsCategory}}class="active" {{end}}>
+                            <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">
+                                分类
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="drop1">
+                                <li><a href="#">C/C++</a></li>
+                                <li><a href="#">Go</a></li>
+                                <li><a href="#">Python</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/category">所有分类</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pull-right">
+                    <ul class="nav navbar-nav">
+                        {{if .IsLogin}}
+                        <li><a href="/login?exit=true">退出</a></li>
+                        {{else}}
+                        <li><a href="/login">管理员登陆</a></li>
+                        {{end}}
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="container">
+            <h1>分类列表</h1>
+            <h4>分类名称</h4>
+            <!-- <div class="input-group" style="width: 100%;">
+                <input id="categoryName" type="text" class="form-control" placeholder="输入类别名称" name="categoryName">
+            </div>
+            <button type="submit" class="btn btn-default" onclick="return checkInput();">添加</button> -->
+            <form method="GET" class="form-horizontal" action="/category">
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <input id="categoryName" type="text" class="form-control" placeholder="输入分类名称"
+                            name="categoryName">
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <div class="col-sm-10">
+                        <!-- 用于区别两种GET操作 -->
+                        <input type="hidden" name="op" value="add">  
+
+                        <button type="submit" class="btn btn-default"
+                            onclick="return checkInput();">添加</button>
+                    </div>
+                </div>
+            </form>
+            <script>
+                function checkInput() {
+                    //上面的onclick="return checkInput();" 是什么意思？
+                    var categoryName = document.getElementById("categoryName")
+                    if (categoryName.value.length == 0) {
+                        alert("分类名称不能为空")
+                        return false
+                    }
+                    return true
+                }
+
+                function backToHome() {
+                    window.location.href = "/" //当前页面打开URL页面，前面三个用法相同。
+                    return false
+                }
+            </script>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>文章名</th>
+                            <th>文章数</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+
+
+        <script src="../static/js/app.js"></script>
+    </body>
+
+</html>
