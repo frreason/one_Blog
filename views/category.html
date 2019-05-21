@@ -1,0 +1,68 @@
+{{template "header" .}}
+        <link rel="stylesheet" type="text/css" href="../static/css/home.css">
+        <title>One Blog</title>
+    </head>
+    <body>
+
+        <div id="particles-js"></div>
+        {{template "navbar" .}}
+
+        <div class="container">
+            <h1>分类列表</h1>
+            <h4>分类名称</h4>
+            <!-- 为什么是GET？ -->
+            <form method="GET" class="form-horizontal" action="/category">
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <input id="categoryName" type="text" class="form-control" placeholder="输入分类名称"
+                            name="categoryName">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <!-- 用于区别两种GET操作 -->
+                        <input type="hidden" name="op" value="add">
+                        <button type="submit" class="btn btn-default" onclick="return checkInput();">添加</button>
+                    </div>
+                </div>
+            </form>
+            <script>
+                function checkInput() {
+                    //上面的onclick="return checkInput();" 是什么意思？
+                    var categoryName = document.getElementById("categoryName")
+                    if (categoryName.value.length == 0) {
+                        alert("分类名称不能为空")
+                        return false
+                    }
+                    return true
+                }
+            </script>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>分类名</th>
+                            <th>文章数</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Categories}}
+                        <tr>
+                            <th scope="row">{{.Id}}</th>
+                            <td>{{.Title}}</td>
+                            <td>{{.Total}}</td>
+                            <!-- 下面是删除操作  op=del说明是删除操作 -->
+                            <td><a href="/category?op=del&id={{.Id}}">删除</a></td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+        </div>
+
+
+
+        <script src="../static/js/app.js"></script>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+{{template "header" .}}
+
+        <title>One Blog</title>
+    </head>
+    <body>
+
+        <div id="particles-js"></div>
+
+        <!-- 导航栏 -->
+        {{template "navbar" .}}
+
+        <div class="container">
+            <h1>文章列表</h1>
+            <!-- 跳转到add页面 -->
+            <a href="/topic/add" class="btn btn-default">添加文章</a>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>文章名</th>
+                        <th>最后更新</th>
+                        <th>浏览数</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Topics}}
+                    <tr>
+                        <th scope="row">{{.Id}}</th>
+                        <td>{{.Title}}</td>
+                        <td>{{.Updated}}</td>
+                        <td>{{.Views}}</td>
+                        <!-- 下面是删除操作  op=del说明是删除操作 -->
+                        <td>
+                            <a href="/topic/update/{{.Id}}">更新</a>
+                            <a href="/topic/del/{{.Id}}">删除</a>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <!-- <div class="container">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                    <li class="active"><a href="/topic?page=1">1 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="/topic?page=2">2</a></li>
+                    <li><a href="/topic?page=3">3</a></li>
+                    <li><a href="/topic?page=4">4</a></li>
+                    <li><a href="/topic?page=5">5</a></li>
+                    <li><a href="/topic?page=0&next=true" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                </ul>
+            </nav>
+        </div> -->
+        <script src="../static/js/app.js"></script>
+    </body>
+    
+</html>
