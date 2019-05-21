@@ -238,7 +238,19 @@ func UpdateTopic(tid int64, title, content, category string) error { //tid是必
 			}
 		}
 	}
+	//应该让旧分类total-1
+	err = categoryQs.Filter("Title", oneTopic.Category).One(oneCategory)
 
+	if err != nil {
+		return err
+	}
+	oneCategory.Total -= 1
+	oneCategory.Updated = realNow
+	_, err = o.Update(oneCategory)
+	if err != nil {
+		return err
+	}
+	oneTopic.Category = category
 	oneTopic.Title = title
 	oneTopic.Content = content
 	//更新记录
@@ -250,13 +262,34 @@ func UpdateTopic(tid int64, title, content, category string) error { //tid是必
 }
 
 func DeleteTopic(tid int64) error {
+
+	now := time.Now()
+	timeAdd, err := time.ParseDuration("+8h") //因为伦敦时间慢8小时
+	realNow := now.Add(timeAdd)
+
 	o := orm.NewOrm()
 
-	topic := &Topic{
+	oneTopic := &Topic{
 		Id: tid,
 	}
-
-	_, err := o.Delete(topic)
+	qs := o.QueryTable("Topic")
+	err = qs.Filter("Id", tid).One(oneTopic)
+	if err != nil {
+		return err
+	}
+	oneCategory := &Category{}
+	categoryQs := o.QueryTable("Category")
+	err = categoryQs.Filter("Title", oneTopic.Category).One(oneCategory)
+	if err != nil {
+		return err
+	}
+	oneCategory.Total -= 1
+	oneCategory.Updated = realNow
+	_, err = o.Update(oneCategory)
+	if err != nil {
+		return err
+	}
+	_, err = o.Delete(oneTopic)
 	if err != nil {
 		return err
 	}
