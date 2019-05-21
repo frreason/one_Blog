@@ -1,0 +1,117 @@
+{{template "header" .}}
+
+        <title>One Blog</title>
+        <style>
+            a{
+                color: black
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="particles-js"></div>
+
+        <!-- 导航栏 -->
+        {{template "navbar" .}}
+
+        <div class="container">
+            <div class="container col-sm-9">
+                <h2 class="text-center">{{.Title}}</h2>
+                <h6 class="text-muted text-center">writed by: {{.Author}}; created: {{.Created}}</h6>
+                <p style="font-size: 16px;">{{.Content}}</p>
+
+                <h4 style="margin-top: 50px;">所有评论：</h4>
+
+                <form method="POST" class="form-horizontal" action="/topic/add"
+                    style="margin-top: 50px;padding-left: 15px;padding-right: 15px;">
+
+
+                    <div class="form-group">
+                        <h4>昵称：</h4>
+                        <input id="name" type="text" class="form-control" placeholder="输入昵称"
+                            name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <h4>评论：</h4>
+                        <textarea name="conment" id="conment" cols="20" rows="5" placeholder="输入评论内容"
+                            class="form-control"></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default"
+                            onclick="return checkInput();">提交评论</button>
+                    </div>
+
+                    <script>
+                        function checkInput() {
+                            //上面的onclick="return checkInput();" 是什么意思？
+                            var title = document.getElementById("title")
+                            var content = document.getElementById("content")
+                            var category = document.getElementById("category")
+                            if (title.value.length == 0) {
+                                alert("文章名称不能为空")
+                                return false
+                            }
+                            if (content.value.length == 0) {
+                                alert("文章内容不能为空")
+                                return false
+                            }
+                            if (category.value.length == 0) {
+                                alert("归属类别不能为空")
+                                return false
+                            }
+                            return true
+                        }
+                    </script>
+
+                </form>
+
+            </div>
+            <div class="container col-md-3">
+                <h3>个人分类</h3>
+                <ul class="nav ">
+                    <li>
+                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
+                    </li>
+                    <li>
+                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
+                    </li>
+                    <li>
+                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
+                    </li>
+                </ul>
+                <h3>最新文章</h3>
+                <ul class="nav nav-tabs nav-stacked">
+                    <li>
+                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
+                    </li>
+                    <li>
+                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
+                    </li>
+                    <li>
+                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
+                    </li>
+                </ul>
+                <h3>最新评论</h3>
+                <ul class="nav nav-tabs nav-stacked">
+                    <li>
+                        <a href="#">Inbox </a>
+                    </li>
+                    <li>
+                        <a href="#">Inbox</a>
+                    </li>
+                    <li>
+                        <a href="#">Inbox</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        
+
+        <script src="../static/js/app.js"></script> 
+    </body>
+
+</html>

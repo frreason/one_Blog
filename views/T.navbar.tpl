@@ -1,12 +1,12 @@
 {{define "navbar"}}
 <!-- 导航栏 -->
-<div class="navbar navbar-default" style="margin-bottom :20px;">
+<div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div>
             <a class="navbar-brand" href="#">One Blog</a>
             <ul class="nav navbar-nav">
                 <li {{if .IsHome}}class="active" {{end}}><a href="/">首页</a></li>
-                <li {{if .IsAll}}class="active" {{end}}><a href="/topic">文章</a></li>
+                <li {{if .IsTopic}}class="active" {{end}}><a href="/topic">文章</a></li>
                 <li class="dropdown" {{if .IsCategory}}class="active" {{end}}>
                     <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                         aria-expanded="false">

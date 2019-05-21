@@ -19,6 +19,10 @@ func (this *CategoryController) Get() {
 
 	switch op {
 	case "del":
+		if !checkAccount(this.Ctx) { //管理员权限检查
+			this.Redirect("/login", 302)
+			return
+		}
 		cid, err := strconv.ParseInt(this.Input().Get("id"), 10, 64) //该分类的Id
 		if len(this.Input().Get("id")) == 0 {
 			break
@@ -33,6 +37,10 @@ func (this *CategoryController) Get() {
 		this.Redirect("/category", 301)
 		return
 	case "add":
+		if !checkAccount(this.Ctx) { //管理员权限检查
+			this.Redirect("/login", 302)
+			return
+		}
 		tName := this.Input().Get("categoryName")
 		if len(tName) == 0 {
 			break

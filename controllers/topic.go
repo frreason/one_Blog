@@ -14,6 +14,7 @@ type TopicController struct {
 
 func (this *TopicController) Get() {
 	this.Data["IsLogin"] = checkAccount(this.Ctx)
+	this.Data["IsTopic"] = true
 	this.TplName = "topic.html"
 
 	topics, err := models.GetAllTopic()
@@ -117,4 +118,26 @@ func (this *TopicController) Update() {
 	this.Redirect("/topic", 302)
 	return
 
+}
+
+func (this *TopicController) ViewTopic() {
+	id := this.Ctx.Input.Param(":id")
+	tid, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		beego.Error(err)
+	}
+	this.Data["IsLogin"] = checkAccount(this.Ctx)
+	this.TplName = "viewTopic.html"
+	this.Data["IsTopic"] = true
+
+	topic, err := models.GetTopic(tid)
+	if err != nil {
+		beego.Error(err)
+	}
+	this.Data["Title"] = topic.Title
+	this.Data["Content"] = topic.Content
+	this.Data["Created"] = topic.Created
+	this.Data["Author"] = beego.AppConfig.String("userName")
+
+	return
 }

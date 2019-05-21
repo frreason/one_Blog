@@ -13,15 +13,44 @@
             
         </div>
 
-        {{range .Topics}}
-        <div class="container hhh">
-            <div class="page-header">
-                <h1>{{.Title}}</h1>
-                <h6 class="text-muted">writed by: {{.Author}};  created: {{.Created}}</h6>
-                <p>{{.Content}}</p>
+        
+        <div class="container" class="row-fluid">
+            
+            <div class="col-md-9">
+                {{range .Topics}}
+                <div class="page-header">
+                    <a href="/topic/view/{{.Id}}" style="text-decoration: none;color: black;">
+                        <h1>{{.Title}}</h1>
+                    </a>
+                    <h6 class="text-muted">writed by: {{.Author}};  created: {{.Created}}</h6>
+                    <p>{{.Content}}</p>
+                </div>
+                {{end}}
+            </div>
+            
+
+            <div class="col-md-3">
+                <h3>文章分类</h3>
+                <ul class="nav nav-tabs nav-stacked">
+                    <li><a href='#' style="color: black">Another Link 1</a></li>
+                    <li><a href='#' style="color: black">Another Link 2</a></li>
+                    <li><a href='#' style="color: black">Another Link 3</a></li>
+                </ul>
+                <h3>浏览最多</h3>
+                <ul class="nav nav-tabs nav-stacked">
+                    <li><a href='#' style="color: black">Another Link 1</a></li>
+                    <li><a href='#' style="color: black">Another Link 2</a></li>
+                    <li><a href='#' style="color: black">Another Link 3</a></li>
+                </ul>
+                <h3>最新评论</h3>
+                <ul class="nav nav-tabs nav-stacked">
+                    <li><a href='#' style="color: black">Another Link 1</a></li>
+                    <li><a href='#' style="color: black">Another Link 2</a></li>
+                    <li><a href='#' style="color: black">Another Link 3</a></li>
+                </ul>
             </div>
         </div>
-        {{end}}
+        
         <!-- <div class="container hhh">
             <div class="page-header">
                 <h1>Example page header</h1>
@@ -30,7 +59,7 @@
             </div>
         </div> -->
         <!-- 个人分类 最热文章 最新评论 3个列表栏 -->
-        <div class="container list-right">
+        <!-- <div class="container list-right">
             <ul class="list-group">
                 <li class="list-group-item">
                     <span class="badge">14</span>
@@ -53,7 +82,7 @@
                     <a href="#" class="aColor">Cras justo odio</a>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <script src="../static/js/app.js"></script>
     </body>
