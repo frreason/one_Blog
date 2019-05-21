@@ -225,7 +225,6 @@ func UpdateTopic(tid int64, title, content, category string) error { //tid是必
 			oneCategory.Title = category
 			oneCategory.Total += 1
 			oneCategory.Updated = realNow
-<<<<<<< HEAD
 			_, err = o.Insert(oneCategory)
 			if err != nil {
 				return err
@@ -237,11 +236,6 @@ func UpdateTopic(tid int64, title, content, category string) error { //tid是必
 			if err != nil {
 				return err
 			}
-=======
-		} else {
-			oneCategory.Total += 1
-			oneCategory.Updated = realNow
->>>>>>> 45fa9d667254bb3c4fdf0f688e25867e7ed247cf
 		}
 	}
 
