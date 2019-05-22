@@ -134,10 +134,22 @@ func (this *TopicController) ViewTopic() {
 	if err != nil {
 		beego.Error(err)
 	}
+	log.Println(tid)
+	this.Data["Tid"] = tid
 	this.Data["Title"] = topic.Title
 	this.Data["Content"] = topic.Content
 	this.Data["Created"] = topic.Created
 	this.Data["Author"] = beego.AppConfig.String("userName")
+	comments := make([]*models.Comments, 0)
+
+	comments, err = models.GetComment(tid)
+	if err != nil {
+		beego.Error(err)
+	}
+	for i, v := range comments {
+		v.Floor = i + 1
+	}
+	this.Data["Comments"] = comments
 
 	return
 }

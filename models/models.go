@@ -29,32 +29,32 @@ type Category struct { //文章分类
 	Updated time.Time `orm:"index"`
 }
 type Topic struct { //每一个文章 Id对应Comments的Id
-	Id               int64
-	Aid              int64
-	Title            string
-	Content          string `orm:"size(5000)"`
-	Author           string
-	Views            int64     `orm:"index"`
-	Comments         int64     `orm:"index"`
-	Created          time.Time `orm:"index"`
-	Updated          time.Time `orm:"index"`
-	ReplayLastUserId int64
-	ReplayCount      int64
-	ReplayTime       time.Time
-	Category         string
+	Id                int64
+	Title             string
+	Content           string `orm:"size(5000)"`
+	Author            string
+	Views             int64     `orm:"index"`
+	Created           time.Time `orm:"index"`
+	Updated           time.Time `orm:"index"`
+	CommentLastUserId int64
+	CommentCount      int64 `orm:"index"`
+	CommentTime       time.Time
+	Category          string
 }
 
-type Author struct { //作者信息 就是本人。。。  Id对应Aid
+type Author struct { //作者信息 就是本人。。。
 	Id    int64 `orm:"index"`
 	Name  string
 	Email string
 }
 
-type Comments struct { //评论信息表 Id是外码
+type Comments struct { //评论信息表 Tid是外码
 	Id      int64
+	Tid     int64     //对应topic里的id
 	Created time.Time `orm:"index"`
 	Content string    `orm:"size(5000)"`
 	Writer  string
+	Floor   int
 }
 
 func RegisterDB() {
@@ -67,7 +67,7 @@ func RegisterDB() {
 	//先注册数据表 RegisterModel
 	//然后注册数据库驱动 RegisterDriver
 	//再然后注册数据库
-	orm.RegisterModel(new(Category), new(Topic), new(Author))
+	orm.RegisterModel(new(Category), new(Topic), new(Comments))
 	orm.RegisterDriver(_SQLITE_DRIVER, orm.DRSqlite)
 	orm.RegisterDataBase("default", _SQLITE_DRIVER, _DB_NAME, 10) //设置数据库连接参数  "root:061365404@"+_DB_NAME+"?charset=utf8"
 	orm.DefaultTimeLoc = time.UTC
@@ -133,13 +133,13 @@ func AddTopic(title, content, category string) error {
 	realNow := now.Add(timeAdd)
 
 	oneTopic := &Topic{
-		Title:      title,
-		Content:    content,
-		Created:    realNow,
-		Updated:    realNow,
-		Category:   category,
-		ReplayTime: realNow,
-		Author:     beego.AppConfig.String("userName"),
+		Title:       title,
+		Content:     content,
+		Created:     realNow,
+		Updated:     realNow,
+		Category:    category,
+		CommentTime: realNow,
+		Author:      beego.AppConfig.String("userName"),
 	}
 	_, err = o.Insert(oneTopic)
 	if err != nil {
@@ -297,4 +297,53 @@ func DeleteTopic(tid int64) error {
 		return err
 	}
 	return nil
+}
+
+func AddComment(tid int64, nickName, comment string) error {
+
+	now := time.Now()
+	timeAdd, err := time.ParseDuration("+8h") //因为伦敦时间慢8小时
+	realNow := now.Add(timeAdd)
+
+	o := orm.NewOrm()
+	qs := o.QueryTable("Topic")
+	oneTopic := &Topic{
+		Id: tid,
+	}
+	err = qs.Filter("Id", tid).One(oneTopic)
+
+	if err != nil {
+		return err
+	}
+	oneTopic.CommentCount += 1
+	oneTopic.CommentTime = realNow //最新的评论时间
+	_, err = o.Update(oneTopic)
+	if err != nil {
+		return err
+	}
+
+	oneComment := &Comments{
+		Tid:     tid,
+		Writer:  nickName,
+		Content: comment,
+		Created: realNow,
+	}
+	_, err = o.Insert(oneComment)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GetComment(tid int64) ([]*Comments, error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable("Comments")
+
+	comments := make([]*Comments, 0)
+	_, err := qs.Filter("Tid", tid).All(&comments)
+	if err != nil {
+		return nil, err
+	}
+	return comments, nil
 }

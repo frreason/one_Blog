@@ -18,23 +18,26 @@
             <div class="container col-sm-9">
                 <h2 class="text-center">{{.Title}}</h2>
                 <h6 class="text-muted text-center">writed by: {{.Author}}; created: {{.Created}}</h6>
-                <p style="font-size: 16px;">{{.Content}}</p>
+                <pre style="font-size: 16px;border: none;background: none">{{.Content}}</pre>
 
                 <h4 style="margin-top: 50px;">所有评论：</h4>
+                {{range .Comments}}
+                <pre>{{.Floor}}楼 {{.Writer}}:  {{.Content}}<span style="font-size: 12px;" class="text-muted">Created in {{.Created}}</span></pre>
+                {{end}}
 
-                <form method="POST" class="form-horizontal" action="/topic/add"
+                <form method="POST" class="form-horizontal" action="/comment/add/{{.Tid}}"
                     style="margin-top: 50px;padding-left: 15px;padding-right: 15px;">
 
 
                     <div class="form-group">
                         <h4>昵称：</h4>
-                        <input id="name" type="text" class="form-control" placeholder="输入昵称"
-                            name="name">
+                        <input id="nickName" type="text" class="form-control" placeholder="输入昵称"
+                            name="nickName">
                     </div>
 
                     <div class="form-group">
                         <h4>评论：</h4>
-                        <textarea name="conment" id="conment" cols="20" rows="5" placeholder="输入评论内容"
+                        <textarea name="comment" id="comment" cols="20" rows="5" placeholder="输入评论内容"
                             class="form-control"></textarea>
                     </div>
 
@@ -47,21 +50,17 @@
                     <script>
                         function checkInput() {
                             //上面的onclick="return checkInput();" 是什么意思？
-                            var title = document.getElementById("title")
-                            var content = document.getElementById("content")
-                            var category = document.getElementById("category")
-                            if (title.value.length == 0) {
-                                alert("文章名称不能为空")
+                            var nickName = document.getElementById("nickName")
+                            var comment = document.getElementById("comment")
+                            if (nickName.value.length == 0) {
+                                alert("昵称不能为空")
                                 return false
                             }
-                            if (content.value.length == 0) {
-                                alert("文章内容不能为空")
+                            if (comment.value.length == 0) {
+                                alert("评论内容不能为空")
                                 return false
                             }
-                            if (category.value.length == 0) {
-                                alert("归属类别不能为空")
-                                return false
-                            }
+            
                             return true
                         }
                     </script>
