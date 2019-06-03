@@ -30,7 +30,7 @@ func (this *CommentController) AddComment() {
 }
 
 func (this *CommentController) DelComment() {
-
+	
 }
 
 func (this *CommentController) GetComment() {

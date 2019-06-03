@@ -40,6 +40,7 @@ type Topic struct { //每一个文章 Id对应Comments的Id
 	CommentCount      int64 `orm:"index"`
 	CommentTime       time.Time
 	Category          string
+	label             string
 }
 
 type Author struct { //作者信息 就是本人。。。
@@ -97,13 +98,18 @@ func AddCategory(titleName string) error {
 	return nil
 }
 
-func GetAllCategory() ([]*Category, error) {
+func GetAllCategory(totalMax bool) ([]*Category, error) {
 
 	o := orm.NewOrm()
 	qs := o.QueryTable("Category")
 
 	categories := make([]*Category, 0)
-	_, err := qs.All(&categories)
+	var err error
+	if totalMax {
+		_, err = qs.OrderBy("-total").All(&categories)
+	} else {
+		_, err = qs.All(&categories)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -179,16 +185,32 @@ func GetTopic(tid int64) (*Topic, error) {
 	if err != nil {
 		return nil, err
 	}
+	oneTopic.Views++
+	_, err = o.Update(oneTopic)
+	if err != nil {
+		return nil, err
+	}
+
 	return oneTopic, nil
 }
 
-func GetAllTopic() ([]*Topic, error) {
+func GetAllTopic(viewsMax, lastest bool) ([]*Topic, error) {
 
 	o := orm.NewOrm()
 	qs := o.QueryTable("Topic")
 
 	topics := make([]*Topic, 0)
-	_, err := qs.All(&topics)
+
+	var err error
+	if viewsMax == true {
+		_, err = qs.OrderBy("-Views").All(&topics)
+	} else {
+		if lastest {
+			_, err = qs.OrderBy("Updated").All(&topics)
+		} else {
+			_, err = qs.All(&topics)
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -201,8 +223,8 @@ func UpdateTopic(tid int64, title, content, category string) error { //tid是必
 	qs := o.QueryTable("Topic")
 
 	oneTopic := &Topic{}
-	err := qs.Filter("Id", tid).One(oneTopic)
-	if err != nil { //说明没有这篇文章，那自然就不能进行更新
+	err := qs.Filter("Id", tid).One(oneTopic) //读出旧文章，好进行对比
+	if err != nil {                           //说明没有这篇文章，那自然就不能进行更新
 		return err
 	}
 	if oneTopic.Title == title && oneTopic.Content == content && oneTopic.Category == category { //无需改动
@@ -336,6 +358,7 @@ func AddComment(tid int64, nickName, comment string) error {
 	return nil
 }
 
+//读取的是对应的文章的评论
 func GetComment(tid int64) ([]*Comments, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable("Comments")
@@ -346,4 +369,29 @@ func GetComment(tid int64) ([]*Comments, error) {
 		return nil, err
 	}
 	return comments, nil
+}
+
+func GetAllComment(lastest bool) ([]*Comments, error) {
+
+	o := orm.NewOrm()
+	qs := o.QueryTable("Comments")
+	comments := make([]*Comments, 0)
+	var err error
+
+	if lastest {
+		_, err = qs.OrderBy("Created").All(&comments)
+	} else {
+		_, err = qs.All(&comments)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return comments, err
+}
+
+//删除Comments中的一条评论以及相应的topic评论total-1
+func DelComment(cid, tid string) error {
+
+	return nil
 }

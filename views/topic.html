@@ -21,6 +21,7 @@
                         <th>文章名</th>
                         <th>最后更新</th>
                         <th>浏览数</th>
+                        <th>评论数</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -31,6 +32,7 @@
                         <td>{{.Title}}</td>
                         <td>{{.Updated}}</td>
                         <td>{{.Views}}</td>
+                        <td>{{.CommentCount}}</td>
                         <!-- 下面是删除操作  op=del说明是删除操作 -->
                         <td>
                             <a href="/topic/update/{{.Id}}">更新</a>

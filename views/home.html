@@ -32,21 +32,35 @@
             <div class="col-md-3">
                 <h3>文章分类</h3>
                 <ul class="nav nav-tabs nav-stacked">
-                    <li><a href='#' style="color: black">Another Link 1</a></li>
-                    <li><a href='#' style="color: black">Another Link 2</a></li>
-                    <li><a href='#' style="color: black">Another Link 3</a></li>
+                    {{range .Categroies}}
+                    <li>
+                        <a href='#' style="color: black">
+                            {{.Title}}
+                            <span class="badge pull-right">{{.Total}}</span>
+                        </a> 
+                    </li>
+                    {{end}}
                 </ul>
                 <h3>浏览最多</h3>
                 <ul class="nav nav-tabs nav-stacked">
-                    <li><a href='#' style="color: black">Another Link 1</a></li>
-                    <li><a href='#' style="color: black">Another Link 2</a></li>
-                    <li><a href='#' style="color: black">Another Link 3</a></li>
+                    {{range .ViewsMaxTopic}}
+                    <li>
+                        <a href='#' style="color: black">
+                            {{.Title}}
+                            <span class="text-muted pull-right" style="font-size: 14px;">浏览数：{{.Views}}</span>
+                        </a>
+                    </li>
+                    {{end}}
                 </ul>
                 <h3>最新评论</h3>
                 <ul class="nav nav-tabs nav-stacked">
-                    <li><a href='#' style="color: black">Another Link 1</a></li>
-                    <li><a href='#' style="color: black">Another Link 2</a></li>
-                    <li><a href='#' style="color: black">Another Link 3</a></li>
+                    {{range .LastestComments}}
+                    <li>
+                        <a href='#' style="color: black">
+                            {{.Writer}}: {{.Content}}
+                        </a>
+                    </li>
+                    {{end}}
                 </ul>
             </div>
         </div>

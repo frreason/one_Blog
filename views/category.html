@@ -44,6 +44,7 @@
                             <th>#</th>
                             <th>分类名</th>
                             <th>文章数</th>
+                            <th>最后更新</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -53,6 +54,7 @@
                             <th scope="row">{{.Id}}</th>
                             <td>{{.Title}}</td>
                             <td>{{.Total}}</td>
+                            <td>{{.Updated}}</td>
                             <!-- 下面是删除操作  op=del说明是删除操作 -->
                             <td><a href="/category?op=del&id={{.Id}}">删除</a></td>
                         </tr>

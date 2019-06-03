@@ -13,16 +13,18 @@
 
         <!-- 导航栏 -->
         {{template "navbar" .}}
-
+        
         <div class="container">
             <div class="container col-sm-9">
                 <h2 class="text-center">{{.Title}}</h2>
-                <h6 class="text-muted text-center">writed by: {{.Author}}; created: {{.Created}}</h6>
+                <h6 class="text-muted text-center">作者： {{.Author}}; 创建于: {{.Created}}; 浏览数：{{.Views}}</h6>
                 <pre style="font-size: 16px;border: none;background: none">{{.Content}}</pre>
 
                 <h4 style="margin-top: 50px;">所有评论：</h4>
+                {{$admin := .Admin}}
+                {{$tid := .Tid}}
                 {{range .Comments}}
-                <pre>{{.Floor}}楼 {{.Writer}}:  {{.Content}}<span style="font-size: 12px;" class="text-muted">Created in {{.Created}}</span></pre>
+                <pre>{{.Floor}}楼 {{.Writer}}: {{.Content}}<span style="font-size: 12px;" class="text-muted"> Created in {{.Created}}</span>{{if $admin}}<a href="/comment/del/{{.id}}&{{$tid}}" class="pull-right aColor">删除</a>{{end}}</pre>
                 {{end}}
 
                 <form method="POST" class="form-horizontal" action="/comment/add/{{.Tid}}"
