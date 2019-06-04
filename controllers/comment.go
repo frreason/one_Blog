@@ -30,7 +30,24 @@ func (this *CommentController) AddComment() {
 }
 
 func (this *CommentController) DelComment() {
-	
+	if !checkAccount(this.Ctx) { //管理员权限检查
+		this.Redirect("/login", 302)
+		return
+	}
+
+	id := this.Input().Get("cid")
+	tid := this.Input().Get("tid")
+	cid, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		beego.Error(err)
+	}
+	err = models.DeleteComment(cid)
+	if err != nil {
+		beego.Error(err)
+	}
+	this.Redirect("/topic/view/"+tid, 302)
+	return
+
 }
 
 func (this *CommentController) GetComment() {

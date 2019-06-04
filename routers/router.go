@@ -18,5 +18,6 @@ func init() {
 	beego.Router("/topic/update/:id", &controllers.TopicController{}, "post:Update")      //
 	beego.Router("/topic/view/:id", &controllers.TopicController{}, "get:ViewTopic")      //
 	beego.Router("/comment/add/:id", &controllers.CommentController{}, "post:AddComment") //
-	beego.Router("/comment/del/:id", &controllers.CommentController{}, "post:DelComment") //
+	beego.Router("/comment/del", &controllers.CommentController{}, "get:DelComment")      //
+	beego.Router("/topic/category/:id", &controllers.TopicController{}, "get:ListCategoryTopic")
 }

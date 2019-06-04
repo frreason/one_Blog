@@ -24,7 +24,7 @@
                 {{$admin := .Admin}}
                 {{$tid := .Tid}}
                 {{range .Comments}}
-                <pre>{{.Floor}}楼 {{.Writer}}: {{.Content}}<span style="font-size: 12px;" class="text-muted"> Created in {{.Created}}</span>{{if $admin}}<a href="/comment/del/{{.id}}&{{$tid}}" class="pull-right aColor">删除</a>{{end}}</pre>
+                <pre>{{.Floor}}楼 {{.Writer}}: {{.Content}}<span style="font-size: 12px;" class="text-muted"> Created in {{.Created}}</span>{{if $admin}}<a href="/comment/del?cid={{.Id}}&tid={{$tid}}" class="pull-right aColor">删除</a>{{end}}</pre>
                 {{end}}
 
                 <form method="POST" class="form-horizontal" action="/comment/add/{{.Tid}}"
@@ -70,45 +70,9 @@
                 </form>
 
             </div>
-            <div class="container col-md-3">
-                <h3>个人分类</h3>
-                <ul class="nav ">
-                    <li>
-                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
-                    </li>
-                </ul>
-                <h3>最新文章</h3>
-                <ul class="nav nav-tabs nav-stacked">
-                    <li>
-                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
-                    </li>
-                    <li>
-                        <a href="#">Inbox <span class="badge pull-right">42</span></a>
-                    </li>
-                </ul>
-                <h3>最新评论</h3>
-                <ul class="nav nav-tabs nav-stacked">
-                    <li>
-                        <a href="#">Inbox </a>
-                    </li>
-                    <li>
-                        <a href="#">Inbox</a>
-                    </li>
-                    <li>
-                        <a href="#">Inbox</a>
-                    </li>
-                </ul>
 
-            </div>
+
+            {{template "rightnav" .}}
         </div>
         
 

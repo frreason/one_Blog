@@ -286,6 +286,7 @@ func UpdateTopic(tid int64, title, content, category string) error { //tid是必
 	return nil
 }
 
+//还得把相应得评论删除
 func DeleteTopic(tid int64) error {
 
 	now := time.Now()
@@ -391,7 +392,63 @@ func GetAllComment(lastest bool) ([]*Comments, error) {
 }
 
 //删除Comments中的一条评论以及相应的topic评论total-1
-func DelComment(cid, tid string) error {
+func DeleteComment(cid int64) error {
+
+	o := orm.NewOrm()
+
+	qs := o.QueryTable("Comments")
+
+	oneComment := &Comments{
+		Id: cid,
+	}
+	err := qs.Filter("Id", cid).One(oneComment)
+	if err != nil {
+		return err
+	}
+
+	tid := oneComment.Tid
+	oneTopic := &Topic{
+		Id: tid,
+	}
+	qs = o.QueryTable("Topic")
+	err = qs.Filter("Id", tid).One(oneTopic)
+	if err != nil {
+		return err
+	}
+	oneTopic.CommentCount--
+	_, err = o.Update(oneTopic)
+	if err != nil {
+		return err
+	}
+
+	_, err = o.Delete(oneComment)
+	if err != nil {
+		return err
+	}
 
 	return nil
+}
+
+func ListCategoryTop(cid int64) ([]*Topic, error) {
+
+	o := orm.NewOrm()
+	qs := o.QueryTable("Category")
+
+	cate := &Category{
+		Id: cid,
+	}
+
+	err := qs.Filter("Id", cid).One(cate)
+	if err != nil {
+		return nil, err
+	}
+	cateName := cate.Title
+	qs = o.QueryTable("Topic")
+	topics := make([]*Topic, 0)
+	_, err = qs.Filter("Category", cateName).All(&topics)
+	if err != nil {
+		return nil, err
+	}
+
+	return topics, nil
 }
